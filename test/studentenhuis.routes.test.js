@@ -16,11 +16,16 @@ describe('Studentenhuis API POST', () => {
 
 
     it('should return a studentenhuis when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
+        chai.request(server)
+        .post('api/studentenhuis')
+        .send({'Naam': 'Avans', 'Adres': 'Hoogeschoollaan, Breda'})
+        .end(function(err, res){
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          done();
+        });
+    });
 
     it('should throw an error when naam is missing', (done) => {
         //

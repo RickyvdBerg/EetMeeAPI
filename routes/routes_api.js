@@ -79,7 +79,7 @@ router.get('/studentenhuis', (req, res, next) => {
             });
     });
 });
-
+// Get specific ID from studentenhuizen
 router.get('/studentenhuis/:id', (req, res, next) => {
 
     const huisId = req.params.id;
@@ -95,6 +95,32 @@ router.get('/studentenhuis/:id', (req, res, next) => {
                 }
             })
     });
+});
+
+// Post studentenhuis
+router.post('/studentenhuis', (req, res, next) => {
+
+    let studentenhuis = req.body;
+
+    assert.equal(typeof (req.body.first_name), 'string', "Argument 'Naam' must be a string.");
+    assert.equal(typeof (req.body.last_name), 'string', "Argument 'Adres' must be a string.");
+
+    const query = {
+        sql: 'INSERT INTO `studentenhuis`(Naam, Adres) VALUES (?, ?)',
+        values: [actor.first_name, actor.last_name],
+        timeout: 2000
+    };
+
+    console.log('QUERY: ' + query.sql);
+
+    db.query(query, (error, rows, fields) => {
+        if (error) {
+            res.status(500).json(error.toString())
+        } else {
+            res.status(200).json(rows)
+        }
+    })
+
 });
 
 module.exports = router;
