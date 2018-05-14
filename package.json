@@ -2,7 +2,7 @@
   "name": "eetmeeapi",
   "version": "1.0.0",
   "description": "EetMeeAPI",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec --exit"
   },
