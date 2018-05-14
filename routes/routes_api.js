@@ -72,13 +72,14 @@ router.post('/register', function (req, res) {
     }
 
     db.query({
-        sql: "SELECT * FROM `User` WHERE `Email` = ?",
+        sql: "SELECT * FROM `user` WHERE `Email` = ?",
         values: [email]
-    }, function (error, result, fields) {
-        if(!result[0])
+    }, (error, result, fields) => {
+        console.log(result);
+        if(result === undefined || result[0] === undefined || !result[0])
         {
             db.query({
-                sql: "INSERT INTO `User` (Voornaam, Achternaam, Email, Password) VALUES (?,?,?,?)",
+                sql: "INSERT INTO `user` (Voornaam, Achternaam, Email, Password) VALUES (?,?,?,?)",
                 values: [firstname,lastname,email,password]
             }, function (errorInsert, resultInsert, fieldsInsert) {
                 if(errorInsert)
@@ -102,7 +103,7 @@ router.get('/register', function (req, res) {
 router.get('/studentenhuis', (req, res) => {
 
     db.query({
-        sql: "SELECT * FROM Studentenhuis"
+        sql: "SELECT * FROM studentenhuis"
     }, function (error, result, fields) {
         if (error) {
             res.status(500).json(error.toString())
