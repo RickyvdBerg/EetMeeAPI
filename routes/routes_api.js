@@ -9,16 +9,10 @@ const db = require("../datasource/mysql-connector");
 // router.all( new RegExp("[^(\/register)]"), function (req, res, next) {
 
 router.all(new RegExp("[^(\/login|\/register)]"), function (req, res, next) {
-//     //TODO register using email, first/last name and password
-// });
-router.all(new RegExp("[^(\/login)]"), function (req, res, next) {
-    //
-    console.log("VALIDATE TOKEN");
+
     var token = (req.header('X-Access-Token')) || '';
     auth.decodeToken(token, (err, payload) => {
         if (err) {
-            console.log('Error handler: ' + err.message);
-            res.status((err.status || 401)).json({ error: new Error("Not authorised").message });
             res.status(401).json({ error: new Error("Not authorised").message });
         } else {
             next();
@@ -27,21 +21,18 @@ router.all(new RegExp("[^(\/login)]"), function (req, res, next) {
 });
 
 router.post('/login', function (req, res) {
-    console.log(req.body)
 
     var email = req.body.email || '';
     var password = req.body.password || '';
 
-    if (!email) { res.status(401).json({ "error": "email incorrect" }); return}
-    if (!password) {res.status(401).json({ "error": "password incorrect"}); return}
-    .post(function (req, res) {
+    if (!email) { res.status(401).json({ "error": "email incorrect" }); return }
+    if (!password) { res.status(401).json({ "error": "password incorrect" }); return }
 
     db.query({
         sql: 'SELECT * FROM `user` WHERE `Email` = ? AND `Password` = ?',
         timeout: 40000,
         values: [email, password]
     }, (error, result, fields) => {
-        console.log("result: " + JSON.stringify(result));
         if (error) {
             res.status(401).json({ "error": "Credentials not found" })
         }
@@ -54,23 +45,8 @@ router.post('/login', function (req, res) {
     });
 }
 );
-        //
-        // Check in datasource for email & password combo.
-        //
-        //
-        // db.query({
-        //     sql: 'SELECT * FROM `user` WHERE `Email` = ? AND ``', 
-        //     timeout: 40000, 
-        //     values: [email]});
-        result = users.filter(function (user) {
-            if (user.email === email && user.password === password) {
-                return (user);
-            }
-        });
 
 router.post('/register', function (req, res) {
-        // Debug
-        console.log("result: " + JSON.stringify(result[0]));
 
     //
     // Get body params or ''
@@ -112,11 +88,6 @@ router.post('/register', function (req, res) {
                 }
                 res.status(200).json({ "token": auth.encodeToken(email), "email": email });
             });
-        // Generate JWT
-        if (result[0]) {
-            res.status(200).json({ "token": auth.encodeToken(username), "username": username });
-        } else {
-            res.status(401).json({ "error": "Invalid credentials, bye" })
         }
         else{
             res.status(401).json({ "error": "user already registered"});
@@ -126,42 +97,41 @@ router.post('/register', function (req, res) {
 );
 router.get('/register', function (req, res) {
     res.status(404).json({"error": "Can't get, please use a post request to register for a token"});
-
-    });
+});
 // Get all studentenhuizen
-router.get('/studentenhuis', (req, res, next) => {
+router.get('/studentenhuis', (req, res) => {
 
-    pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM studentenhuis',
-            (error, rows) => {
-                if (error) {
-                    res.status(500).json(error.toString())
-                    connection.release();
-                } else {
-                    res.status(200).json(rows)
-                    connection.release();
-                }
-            });
+    db.query({
+        sql: "SELECT * FROM Studentenhuis"
+    }, function (error, result, fields) {
+        if (error) {
+            res.status(500).json(error.toString())
+        } else {
+            res.status(200).json(result)
+        }
+        res.end();
     });
 });
 
 // Generate JWT
 
-router.get('/studentenhuis/:id', (req, res, next) => {
+router.get('/studentenhuis/:id', (req, res) => {
 
     const huisId = req.params.id;
 
-    pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM studentenhuis WHERE ID = ?',
-            [huisId],
-            (error, rows, fields) => {
-                if (error) {
-                    res.status(500).json(error.toString())
-                } else {
-                    res.status(200).json(rows)
-                }
-            })
-    });
+    db.query('SELECT * FROM studentenhuis WHERE ID = ?',
+        [huisId],
+        (error, result, fields) => {
+            if (error) {
+                res.status(500).json({"error": "An error occured while fetching the data"})
+            } else if (!result[0]){
+                res.status(500).json({"error": "No houses found!"})
+            }
+            else{
+                res.status(200).json(result)
+            }
+            res.end();
+        })
 });
 
 module.exports = router;

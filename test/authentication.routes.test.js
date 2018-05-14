@@ -5,6 +5,11 @@ const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../server')
 
+const USER_FIRST_NAME = 'TEST';
+const USER_LAST_NAME = 'TEST';
+const USER_EMAIL_UNIQUE = Date.now().toString() + "@test.com";
+const USER_PASSWORD = "password";
+
 chai.should()
 chai.use(chaiHttp)
 
@@ -18,10 +23,10 @@ describe('Registration', () => {
         .post('/api/register')
         .set('Content-Type', 'application/json')
         .send({
-            "firstname": "testRegistration",
-            "lastname": "testRegistartion",
-            "email": "test@registration.nl",
-            "password": "registering"
+            "firstname": USER_FIRST_NAME,
+            "lastname": USER_LAST_NAME,
+            "email": USER_EMAIL_UNIQUE,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(200)
@@ -31,10 +36,6 @@ describe('Registration', () => {
             response.should.have.property('token').which.is.a('string')
             response.should.have.property('email').which.is.a('string')
         
-            validToken = res.body.token
-            module.exports = {
-                token: validToken
-            }
 
             done();
         })
@@ -55,10 +56,10 @@ describe('Registration', () => {
         .post('/api/register')
         .set('Content-Type', 'application/json')
         .send({
-            "firstname": "testRegistration",
-            "lastname": "testRegistartion",
-            "email": "test@registration.nl",
-            "password": "registering"
+            "firstname": USER_FIRST_NAME,
+            "lastname": USER_LAST_NAME,
+            "email": USER_EMAIL_UNIQUE,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(401)
@@ -72,9 +73,9 @@ describe('Registration', () => {
         .post('/api/register')
         .set('Content-Type', 'application/json')
         .send({
-            "lastname": "testRegistartion",
-            "email": "test@registration.nl",
-            "password": "registering"
+            "lastname": USER_LAST_NAME,
+            "email": USER_EMAIL_UNIQUE,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(401)
@@ -88,10 +89,10 @@ describe('Registration', () => {
         .post('/api/register')
         .set('Content-Type', 'application/json')
         .send({
-            "firstname": "1",
-            "lastname": "testRegistartion",
-            "email": "test@registration.nl",
-            "password": "registering"
+            "firstname": USER_LAST_NAME.charAt(0),
+            "lastname": USER_LAST_NAME,
+            "email": USER_EMAIL_UNIQUE,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(401)
@@ -105,9 +106,9 @@ describe('Registration', () => {
         .post('/api/register')
         .set('Content-Type', 'application/json')
         .send({
-            "firstname": "testRegistration",
-            "email": "test@registration.nl",
-            "password": "registering"
+            "firstname": USER_LAST_NAME,
+            "email": USER_EMAIL_UNIQUE,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(401)
@@ -121,10 +122,10 @@ describe('Registration', () => {
         .post('/api/register')
         .set('Content-Type', 'application/json')
         .send({
-            "firstname": "testRegistration",
-            "lastname": "1",
-            "email": "test@registration.nl",
-            "password": "registering"
+            "firstname": USER_LAST_NAME,
+            "lastname": USER_LAST_NAME.charAt(0),
+            "email": USER_EMAIL_UNIQUE,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(401)
@@ -138,9 +139,9 @@ describe('Registration', () => {
         .post('/api/register')
         .set('Content-Type', 'application/json')
         .send({
-            "firstname": "testRegistration",
-            "lastname": "testRegistartion",
-            "password": "registering"
+            "firstname": USER_LAST_NAME,
+            "lastname": USER_LAST_NAME,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(401)
@@ -158,8 +159,8 @@ describe('Login', () => {
         .post('/api/login')
         .set('Content-Type', 'application/json')
         .send({
-            "email": "test@registration.nl",
-            "password": "registering"
+            "email": USER_EMAIL_UNIQUE,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(200)
@@ -183,7 +184,7 @@ describe('Login', () => {
         .post('/api/login')
         .set('Content-Type', 'application/json')
         .send({
-            "password": "registering"
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(401)
@@ -197,8 +198,8 @@ describe('Login', () => {
         .post('/api/login')
         .set('Content-Type', 'application/json')
         .send({
-            "email": "test@registration.nl",
-            "password": "banana"
+            "email": USER_EMAIL_UNIQUE,
+            "password": "wrongpassword"
         })
         .end((err, res) => {
             res.should.have.status(401)
@@ -212,8 +213,8 @@ describe('Login', () => {
         .post('/api/login')
         .set('Content-Type', 'application/json')
         .send({
-            "email": "testdata",
-            "password": "registering"
+            "email": "wrongemail",
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(401)
