@@ -1,0 +1,26 @@
+{
+  "name": "eetmeeapi",
+  "version": "1.0.0",
+  "description": "EetMeeAPI",
+  "main": "app.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RickyvdBerg/EetMeeAPI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RickyvdBerg/EetMeeAPI/issues"
+  },
+  "homepage": "https://github.com/RickyvdBerg/EetMeeAPI#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "express": "^4.16.3",
+    "mocha": "^5.1.1"
+  }
+}
