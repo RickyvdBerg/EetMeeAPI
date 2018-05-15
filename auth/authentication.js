@@ -38,7 +38,29 @@ function decodeToken(token, cb) {
     }
 }
 
+ function getEmailFromToken(token) {
+
+    try {
+        const payload = jwt.decode(token, CONFIG.jwt_encryption);
+
+        // Check if the token has expired. To do: Trigger issue in db ..
+        const now = moment().unix();
+
+        // Check if the token has expired
+        if (now > payload.exp) {
+
+        }
+
+        // Return
+        return payload.sub;
+
+    } catch(err) {
+        cb(null);
+    }
+}
+
 module.exports = {
     encodeToken,
-    decodeToken
+    decodeToken,
+    getEmailFromToken
 };
