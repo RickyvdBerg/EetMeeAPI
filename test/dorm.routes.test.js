@@ -8,33 +8,50 @@ chai.use(chaiHttp)
 
 describe('Studentenhuis API POST', () => {
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = '1253'
+        chai.request(server)
+            .get('/api/studentenhuis')
+            .set('x-acces-token', token)
+            .end((err, res) => {
+                res.should.have.status(401)
+                done()
+
+            })
     })
 
 
     it('should return a studentenhuis when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
+        chai.request(server)
+            .post('api/studentenhuis')
+            .send({ 'Naam': 'Avans', 'Adres': 'Hoogeschoollaan, Breda' })
+            .end(function (err, res) {
+
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('object');
+                done();
+            });
+    });
 
     it('should throw an error when naam is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
+        chai.request(server)
+            .post('api/studentenhuis')
+            .send({ 'Naam': '', 'Adres': 'Hoogeschoollaan, Breda' })
+            .end(function (err, res) {
+                res.should.have.status(412);
+                done();
+            });
+    });
 
     it('should throw an error when adres is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
+        chai.request(server)
+            .post('api/studentenhuis')
+            .send({ 'Naam': 'Avans', 'Adres': '' })
+            .end(function (err, res) {
+                res.should.have.status(412);
+                done();
+            });
+    });
 
 })
 

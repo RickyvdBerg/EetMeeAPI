@@ -37,6 +37,8 @@ router.all(new RegExp("[^(\/login|\/register)]"), function (req, res, next) {
 router.post('/login', usercontroller.loginUser);
 router.post('/register', usercontroller.registerUser);
 router.get('/register', function (req, res) {res.status(404).json({"error": "Can't get, please use a post request to register for a token"});});
+// Post studentenhuis
+router.post('/studentenhuis', dormcontroller.postDorm)
 
 //dorm
 router.get('/studentenhuis', dormcontroller.getAll)

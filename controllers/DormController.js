@@ -29,5 +29,28 @@ module.exports = {
             }
             res.end();
         });
+    },
+    postDorm(req, res, next) {
+
+        let studentenhuis = req.body;
+
+        assert.equal(typeof (req.body.naam), 'string', "Argument 'Naam' must be a string.");
+        assert.equal(typeof (req.body.adres), 'string', "Argument 'Adres' must be a string.");
+
+        const query = {
+            sql: 'INSERT INTO `studentenhuis`(Naam, Adres) VALUES (?, ?)',
+            values: [studentenhuis.naam, studentenhuis.adres],
+            timeout: 2000
+        };
+
+        console.log('QUERY: ' + query.sql);
+
+        db.query(query, (error, rows, fields) => {
+            if (error) {
+                res.status(500).json({ "error": "Error while trying to insert data" })
+            } else {
+                res.status(200).json(rows)
+            }
+        })
     }
 }
