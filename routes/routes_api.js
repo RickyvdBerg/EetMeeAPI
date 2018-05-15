@@ -38,12 +38,12 @@ router.post('/login', usercontroller.loginUser);
 router.post('/register', usercontroller.registerUser);
 router.get('/register', function (req, res) {res.status(404).json({"error": "Can't get, please use a post request to register for a token"});});
 
-// Post studentenhuis
-router.post('/studentenhuis', dormcontroller.posttest)
-
 //dorm
-router.get('/studentenhuis', dormcontroller.getAll)
+router.post('/studentenhuis', dormcontroller.postDorm);
+router.get('/studentenhuis', dormcontroller.getAll);
 router.get('/studentenhuis/:id', dormcontroller.getSpecificDorm);
+router.put('/studentenhuis/:id', dormcontroller.putDorm);
+router.delete('/studentenhuis/:id', dormcontroller.deleteDorm);
 
 //meal
 router.delete('/studentenhuis/:id/maaltijd/:mid', mealcontroller.deleteMealById);

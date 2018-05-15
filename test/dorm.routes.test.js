@@ -24,9 +24,9 @@ describe('Studentenhuis API POST', () => {
         chai.request(server)
             .post('/api/studentenhuis')
             .set('x-access-token', token)
-            .send({ 
-                'naam': 'Avans', 
-                'adres': 'Hoogeschoollaan, Breda' 
+            .send({
+                'naam': 'Avans',
+                'adres': 'Hoogeschoollaan, Breda'
             })
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -39,9 +39,9 @@ describe('Studentenhuis API POST', () => {
         chai.request(server)
             .post('/api/studentenhuis')
             .set('x-access-token', token)
-            .send({ 
+            .send({
                 'naam': '',
-                'adres': 'Hoogeschoollaan, Breda' 
+                'adres': 'Hoogeschoollaan, Breda'
             })
             .end(function (err, res) {
                 res.should.have.status(412);
@@ -55,10 +55,10 @@ describe('Studentenhuis API POST', () => {
             .post('/api/studentenhuis')
             .set('x-access-token', token)
             .send(
-                { 
-                    'naam': 'Avans', 
-                    'adres': '' 
-                })
+            {
+                'naam': 'Avans',
+                'adres': ''
+            })
             .end(function (err, res) {
                 res.should.have.status(412);
                 done();
@@ -134,47 +134,84 @@ describe('Studentenhuis API GET one', () => {
 
 describe('Studentenhuis API PUT', () => {
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = '1253'
+        chai.request(server)
+            .put('/api/studentenhuis/1')
+            .set('x-access-token', token)
+            .end((err, res) => {
+                res.should.have.status(401)
+                done()
+
+            })
     })
 
     it('should return a studentenhuis with ID when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = require('./authentication.routes.test').token;
+        chai.request(server)
+            .put('/api/studentenhuis/1')
+            .set('x-access-token', token)
+            .send({
+                'naam': 'Avans',
+                'adres': 'Hoogeschoollaan, Breda'
+            })
+            .end(function (err, res) {
+                res.should.have.status(200);
+                done()
+            })
     })
 
     it('should throw an error when naam is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
+        const token = require('./authentication.routes.test').token;
+        chai.request(server)
+            .put('/api/studentenhuis/1')
+            .set('x-access-token', token)
+            .send({
+                'naam': '',
+                'adres': 'Hoogeschoollaan, Breda'
+            })
+            .end(function (err, res) {
+                res.should.have.status(412);
+                done();
+            });
+    });
 
     it('should throw an error when adres is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = require('./authentication.routes.test').token;
+        chai.request(server)
+            .put('/api/studentenhuis/1')
+            .set('x-access-token', token)
+            .send({
+                'naam': 'Avans',
+                'adres': ''
+            })
+            .end(function (err, res) {
+                res.should.have.status(412);
+                done()
+            })
     })
 })
 
 describe('Studentenhuis API DELETE', () => {
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = '1253'
+        chai.request(server)
+            .get('/api/studentenhuis/1')
+            .set('x-access-token', token)
+            .end((err, res) => {
+                res.should.have.status(401)
+                done()
+            })
     })
 
     it('should return a studentenhuis when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = require('./authentication.routes.test').token;
+        chai.request(server)
+            .delete('/api/studentenhuis/1')
+            .set('x-access-token', token)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                done()
+            })
     })
 
     it('should throw an error when naam is missing', (done) => {
