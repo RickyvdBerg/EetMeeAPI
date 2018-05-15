@@ -74,14 +74,7 @@ module.exports = {
         const mealId = req.params.mid;
         const token = req.header('X-Access-Token');
 
-        let email = '';
-        auth.decodeToken(token, function (err, payload) {
-            if (err) {
-                res.status(401).json({ error: new Error("Not authorised").message });
-            } else {
-                email = payload.sub;
-            }
-        });
+        let email = auth.getEmailFromToken(token) || '';
 
         let name = req.body.naam || '';
         let description = req.body.beschrijving || '';
@@ -116,6 +109,7 @@ module.exports = {
             (error, result, fields) => {
                 if(error)
                 {
+                    console.log(error)
                     res.status(500).json({"error" : "Something went wrong while trying to delete entry from participents"})
                 }
                 if (result.affectedRows > 0) {
@@ -124,6 +118,7 @@ module.exports = {
                         (errorInner, resultInner, fieldsInner) => {
                             if(errorInner)
                             {
+                                console.log(errorInner)
                                 res.status(500).json({"error" : "Something went wrong while trying to delete entry from meals"})
                             }
                             if (resultInner.affectedRows > 0) {
@@ -132,6 +127,7 @@ module.exports = {
                         })
                 }
                 else {
+                    console.log("no rows affected")
                     res.status(412).json({ "error": "No changes were made, are you the owner of the meal?" })
                 }
             })

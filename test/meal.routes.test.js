@@ -23,7 +23,7 @@ describe('Maaltijd API POST', () => {
         chai.request(server)
             .post('/api/studentenhuis/1/maaltijd') //TODO more secure test
             .set('x-access-token', token)
-            .send({ 
+            .send({
                 "naam": "TestMaaltijd",
                 "beschrijving": "Erg hard(coded)",
                 "ingredienten": "bugs",
@@ -42,12 +42,12 @@ describe('Maaltijd API POST', () => {
             .post('/api/studentenhuis/1/maaltijd')
             .set('x-access-token', token)
             .send(
-                { 
-                "beschrijving": "Erg hard(coded)",
-                "ingredienten": "bugs",
-                "allergie": "bugs",
-                "prijs": 1337
-            })
+                {
+                    "beschrijving": "Erg hard(coded)",
+                    "ingredienten": "bugs",
+                    "allergie": "bugs",
+                    "prijs": 1337
+                })
             .end(function (err, res) {
                 res.should.have.status(412);
                 done();
@@ -60,7 +60,7 @@ describe('Maaltijd API POST', () => {
             .post('/api/studentenhuis/1/maaltijd')
             .set('x-access-token', token)
             .send(
-                { 
+                {
                     "naam": "TestMaaltijd",
                     "beschrijving": "Erg hard(coded)",
                     "ingredienten": "bugs",
@@ -141,31 +141,39 @@ describe('Maaltijd API GET one', () => {
 
 describe('Maaltijd API PUT', () => {
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = 'invalid';
+        chai.request(server)
+            .put('/api/studentenhuis/1/maaltijd/9')
+            .set('x-access-token', token)
+            .send({
+                "naam": "TestMaaltijdUpdate",
+                "beschrijving": "Niet langer hard!",
+                "ingredienten": "geen bugs",
+                "allergie": "geen bugs",
+                "prijs": 1337
+            })
+            .end(function (err, res) {
+                res.should.have.status(401);
+                done()
+            })
     })
 
     it('should return a Maaltijd with ID when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
-
-    it('should throw an error when naam is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
-
-    it('should throw an error when adres is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = require('./authentication.routes.test').token;
+        chai.request(server)
+            .put('/api/studentenhuis/1/maaltijd/9')
+            .set('x-access-token', token)
+            .send({
+                "naam": "TestMaaltijdUpdate",
+                "beschrijving": Date.now().toString(),
+                "ingredienten": "geen bugs",
+                "allergie": "geen bugs",
+                "prijs": 1337
+            })
+            .end(function (err, res) {
+                res.should.have.status(200);
+                done()
+            })
     })
 })
 

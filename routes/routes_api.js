@@ -5,7 +5,7 @@ const db = require("../datasource/mysql-connector");
 const usercontroller = require('../controllers/UserController')
 const dormcontroller = require('../controllers/DormController')
 const mealcontroller = require('../controllers/MealController')
-
+const participantcontroller = require('../controllers/ParticipantController')
 //
 // Catch all except login
 //
@@ -52,5 +52,9 @@ router.post('/studentenhuis/:id/maaltijd', mealcontroller.postMealToDorm);
 router.get('/studentenhuis/:id/maaltijd', mealcontroller.getAllMeals);
 router.get('/studentenhuis/:id/maaltijd/:mid', mealcontroller.getMealById);
 
+//participant
+router.post('/studentenhuis/:id/maaltijd/:mid/deelnemers', participantcontroller.postParticipantToMeal);
+router.get('/studentenhuis/:id/maaltijd/:mid/deelnemers', participantcontroller.getParticipantsForMeal);
+router.delete('/studentenhuis/:id/maaltijd/:mid/deelnemers', participantcontroller.DeleteParticipantFromMeal);
 
 module.exports = router;
