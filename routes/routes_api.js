@@ -63,64 +63,9 @@ router.route('/login')
         }
 
     });
-// Get all studentenhuizen
-router.get('/studentenhuis', (req, res, next) => {
 
-    pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM studentenhuis',
-            (error, rows) => {
-                if (error) {
-                    res.status(500).json(error.toString())
-                    connection.release();
-                } else {
-                    res.status(200).json(rows)
-                    connection.release();
-                }
-            });
-    });
-});
-// Get specific ID from studentenhuizen
-router.get('/studentenhuis/:id', (req, res, next) => {
-
-    const huisId = req.params.id;
-
-    pool.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM studentenhuis WHERE ID = ?',
-            [huisId],
-            (error, rows, fields) => {
-                if (error) {
-                    res.status(500).json(error.toString())
-                } else {
-                    res.status(200).json(rows)
-                }
-            })
-    });
-});
 
 // Post studentenhuis
-router.post('/studentenhuis', (req, res, next) => {
-
-    let studentenhuis = req.body;
-
-    assert.equal(typeof (req.body.first_name), 'string', "Argument 'Naam' must be a string.");
-    assert.equal(typeof (req.body.last_name), 'string', "Argument 'Adres' must be a string.");
-
-    const query = {
-        sql: 'INSERT INTO `studentenhuis`(Naam, Adres) VALUES (?, ?)',
-        values: [actor.first_name, actor.last_name],
-        timeout: 2000
-    };
-
-    console.log('QUERY: ' + query.sql);
-
-    db.query(query, (error, rows, fields) => {
-        if (error) {
-            res.status(500).json(error.toString())
-        } else {
-            res.status(200).json(rows)
-        }
-    })
-
-});
+router.post('/studentenhuis', dormcontroller.postDorm)
 
 module.exports = router;
