@@ -27,8 +27,6 @@ describe('Studentenhuis API POST', () => {
             .end(function (err, res) {
 
                 res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('object');
                 done();
             });
     });
