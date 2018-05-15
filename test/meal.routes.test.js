@@ -179,31 +179,26 @@ describe('Maaltijd API PUT', () => {
 
 describe('Maaltijd API DELETE', () => {
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+        const token = 'invalid';
+        chai.request(server)
+            .delete('/api/studentenhuis/1/maaltijd/9')
+            .set('x-access-token', token)
+            .end(function (err, res) {
+                res.should.have.status(401);
+                done()
+            })
     })
+    // TODO not enough time to implement safely
 
-    it('should return a Maaltijd when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
-
-    it('should throw an error when naam is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
-
-    it('should throw an error when adres is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
+    // it('should return a Maaltijd when posting a valid object', (done) => {
+    //     const token = require('./authentication.routes.test').token;
+    //     chai.request(server)
+    //     .delete('/api/studentenhuis/1/maaltijd/9')
+    //     .set('x-access-token', token)
+    //     .end(function (err, res) {
+    //         res.should.have.status(200);
+    //         done()
+    //     })
+    // })
 })
 
