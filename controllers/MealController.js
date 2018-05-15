@@ -82,10 +82,6 @@ module.exports = {
         let allergy = req.body.allergie || '';
         let price = Number(req.body.prijs || 0);
 
-        if (name === '', description === '', ingredients === '', allergy === '', price === 0) {
-            res.status(412).json({ "error": "missing fields" })
-            return
-        }
 
         db.query('UPDATE maaltijd INNER JOIN user ON maaltijd.UserID = user.ID SET Naam = ?, Beschrijving = ?, ingredienten = ?, allergie = ?, prijs = ? WHERE user.Email = ? AND maaltijd.ID = ?',
             [name, description, ingredients, allergy, price, email, mealId],

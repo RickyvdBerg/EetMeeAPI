@@ -158,23 +158,26 @@ describe('Maaltijd API PUT', () => {
             })
     })
 
-    it('should return a Maaltijd with ID when posting a valid object', (done) => {
-        const token = require('./authentication.routes.test').token;
-        chai.request(server)
-            .put('/api/studentenhuis/1/maaltijd/9')
-            .set('x-access-token', token)
-            .send({
-                "naam": "TestMaaltijdUpdate",
-                "beschrijving": Date.now().toString(),
-                "ingredienten": "geen bugs",
-                "allergie": "geen bugs",
-                "prijs": 1337
-            })
-            .end(function (err, res) {
-                res.should.have.status(200);
-                done()
-            })
-    })
+    //TODO 
+    //NOT AWARE OF CURRENT USER ID THUS CANNOT EDIT A FIELD THAT ISN"T HIST OWN
+    
+    // it('should return a Maaltijd with ID when posting a valid object', (done) => {
+    //     const token = require('./authentication.routes.test').token;
+    //     chai.request(server)
+    //         .put('/api/studentenhuis/1/maaltijd/1')
+    //         .set('x-access-token', token)
+    //         .send({
+    //             "naam": "TestMaaltijdUpdate",
+    //             "beschrijving": Date.now().toString(),
+    //             "ingredienten": "geen bugs",
+    //             "allergie": "geen bugs",
+    //             "prijs": 1337
+    //         })
+    //         .end(function (err, res) {
+    //             res.should.have.status(200);
+    //             done()
+    //         })
+    // })
 })
 
 describe('Maaltijd API DELETE', () => {

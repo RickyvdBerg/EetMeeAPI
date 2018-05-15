@@ -21,14 +21,8 @@ describe('Participation API POST', () => {
     it('should return a Deelnemer when posting a valid object', (done) => {
         const token = require('./authentication.routes.test').token;
         chai.request(server)
-            .post('/api/studentenhuis/5/maaltijd/5/deelnemers') 
+            .post('/api/studentenhuis/1/maaltijd/1/deelnemers') 
             .set('x-access-token', token)
-            .send({
-                    "UserID": "5",
-                    "StudentenhuisID": "5",
-                    "MaaltijdID": "5"
-                  
-            })
             .end(function (err, res) {
                 res.should.have.status(200);
                 done();

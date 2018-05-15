@@ -159,8 +159,8 @@ describe('Login', () => {
         .post('/api/login')
         .set('Content-Type', 'application/json')
         .send({
-            "email": 'test@server.nl',
-            "password": 'secret'
+            "email": USER_EMAIL_UNIQUE,
+            "password": USER_PASSWORD
         })
         .end((err, res) => {
             res.should.have.status(200)

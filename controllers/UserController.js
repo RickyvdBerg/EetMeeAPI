@@ -55,16 +55,17 @@ module.exports = {
         var password = req.body.password || '';
 
 
-        if (!email) { res.status(401).json({ "error": "email incorrect" }); return }
-        if (!password) { res.status(401).json({ "error": "password incorrect" }); return }
+        if (!email || email.length < 2) { res.status(401).json({ "error": "email incorrect" }); return }
+        if (!password || password.length < 2) { res.status(401).json({ "error": "password incorrect" }); return }
 
         db.query({
             sql: 'SELECT Email, Password FROM `user` WHERE `Email` = ?',
             timeout: 40000,
             values: [email]
         }, (error, result, fields) => {
-            if (error) {
+            if (error || !result[0]) {
                 res.status(401).json({ "error": "Credentials not found" })
+                return
             }
             bcrypt.compare(password, result[0].Password, function(err, succeed) {
             if (succeed)
