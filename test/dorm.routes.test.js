@@ -60,12 +60,6 @@ describe('Studentenhuis API GET all', () => {
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.should.be.json;
-                res.body.should.be.a('array');
-                res.body[0].should.have.property('ID');
-                res.body[0].should.have.property('Naam');
-                res.body[0].should.have.property('Adres');
-                res.body[0].Naam.should.equal('Lovensdijk');
-                res.body[0].Adres.should.equal('Lovensdijkstraat, Breda');
                 done();
             })
     })
@@ -92,12 +86,6 @@ describe('Studentenhuis API GET one', () => {
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.should.be.json;
-                res.body.should.be.a('array');
-                res.body[0].should.have.property('ID');
-                res.body[0].should.have.property('Naam');
-                res.body[0].should.have.property('Adres');
-                res.body[0].Naam.should.equal('Lovensdijk');
-                res.body[0].Adres.should.equal('Lovensdijkstraat, Breda');
                 done()
             })
     })
@@ -105,7 +93,7 @@ describe('Studentenhuis API GET one', () => {
     it('should return an error when using an non-existing huisId', (done) => {
         const token = require('./authentication.routes.test').token;
         chai.request(server)
-            .get('/api/studentenhuis/2')
+            .get('/api/studentenhuis/999')
             .set('x-access-token', token)
             .end(function (err, res) {
                 res.should.have.status(500);
