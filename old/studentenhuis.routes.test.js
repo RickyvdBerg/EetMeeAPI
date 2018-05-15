@@ -15,17 +15,14 @@ describe('Studentenhuis API POST', () => {
             .end((err, res) => {
                 res.should.have.status(401)
                 done()
-
             })
         })
-
 
     it('should return a studentenhuis when posting a valid object', (done) => {
         chai.request(server)
             .post('api/studentenhuis')
             .send({ 'Naam': 'Avans', 'Adres': 'Hoogeschoollaan, Breda' })
             .end(function (err, res) {
-
                 res.should.have.status(200);
                 done();
             });
@@ -59,7 +56,7 @@ describe('Studentenhuis API GET all', () => {
         const token = '1253'
         chai.request(server)
             .get('/api/studentenhuis')
-            .set('x-acces-token', token)
+            .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(401)
                 done()
