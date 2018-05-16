@@ -169,6 +169,7 @@ module.exports = {
                                 db.query('DELETE studentenhuis FROM studentenhuis INNER JOIN user ON studentenhuis.UserID = user.ID WHERE user.Email = ? AND Studentenhuis.ID = ?', [email, houseId],
                                 (errorEnd, resultEnd, fieldsEnd) => {
                                     if (errorEnd) {
+                                        console.log(errorEnd)
                                         res.status(500).json({
                                             "error": "Something went wrong while trying to delete entry from studentenhuis"
                                     

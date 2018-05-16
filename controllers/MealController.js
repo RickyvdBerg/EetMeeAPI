@@ -44,7 +44,7 @@ module.exports = {
                 if (error) {
                     res.status(500).json({ "error": "An error occured while fetching the data" })
                 } else if (!result[0]) {
-                    res.status(404).json({ "error": "No meals found found for house id: " + huisId })
+                    res.status(404).json({ "error": "No meals found" })
                 }
                 else {
                     res.status(200).json(result)
