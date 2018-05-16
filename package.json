@@ -4,7 +4,8 @@
   "description": "EetMeeAPI",
   "main": "server.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec --exit"
+    "test": "./node_modules/.bin/mocha --reporter spec --exit",
+    "start": "server.js"
   },
   "repository": {
     "type": "git",
