@@ -187,6 +187,11 @@ module.exports = {
                                             "succes": "Changes were made"
                                         });
                                     }
+                                    else{
+                                        res.status(409).json({
+                                            "error": "Something went wrong, are you the creator of this house?"
+                                        });
+                                    }
                                 });
                             }
                             else{
