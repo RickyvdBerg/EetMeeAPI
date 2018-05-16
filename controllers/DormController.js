@@ -164,7 +164,7 @@ module.exports = {
                 if (result.affectedRows > 0 || result) {
                     db.query('DELETE maaltijd FROM maaltijd INNER JOIN user ON maaltijd.UserID = user.ID WHERE user.Email = ? AND maaltijd.StudentenhuisID = ?', [email, houseId],
                         (errorInner, resultInner, fieldsInner) => {
-                            if(resultInner.affectedRows > 0 || result)
+                            if(resultInner.affectedRows > 0 || resultInner)
                             {
                                 db.query('DELETE studentenhuis FROM studentenhuis INNER JOIN user ON studentenhuis.UserID = user.ID WHERE user.Email = ? AND studentenhuis.ID = ?', [email, houseId],
                                 (errorEnd, resultEnd, fieldsEnd) => {

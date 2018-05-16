@@ -114,7 +114,7 @@ module.exports = {
                 if(!result){
                     res.status(404).json({ "error": "one or more params incorrect" })
                 }
-                if (result.affectedRows > 0) {
+                if (result.affectedRows > 0 || result) {
                     db.query('DELETE maaltijd FROM maaltijd INNER JOIN user ON maaltijd.UserID = user.ID WHERE user.Email = ? AND maaltijd.ID = ?',
                         [email, mealId],
                         (errorInner, resultInner, fieldsInner) => {
