@@ -166,7 +166,7 @@ module.exports = {
                         (errorInner, resultInner, fieldsInner) => {
                             if(resultInner.affectedRows > 0 || result)
                             {
-                                db.query('DELETE studentenhuis FROM studentenhuis INNER JOIN user ON studentenhuis.UserID = user.ID WHERE user.Email = ? AND Studentenhuis.ID = ?', [email, houseId],
+                                db.query('DELETE studentenhuis FROM studentenhuis INNER JOIN user ON studentenhuis.UserID = user.ID WHERE user.Email = ? AND ID = ?', [email, houseId],
                                 (errorEnd, resultEnd, fieldsEnd) => {
                                     if (errorEnd) {
                                         console.log(errorEnd)
