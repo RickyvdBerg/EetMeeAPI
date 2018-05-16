@@ -35,7 +35,6 @@ module.exports = {
                         res.status(409).json({ "error": "already registered for this meal" })
                     }
                 })
-        //TODO check if already subscribed to meal
     },
     getParticipantsForMeal(req, res, next) {
         const houseId = req.params.id;
