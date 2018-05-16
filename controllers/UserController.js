@@ -13,9 +13,9 @@ module.exports = {
         const saltRounds = 10;
 
 
-        if (firstname.length < 2 || !firstname) { res.status(401).json({ "error": "firstname too short" }); return }
-        if (lastname.length < 2 || !lastname) { res.status(401).json({ "error": "lastname too short" }); return }
-        if (!validateEmail || !email) { res.status(401).json({ "error": "email incorrect" }); return }
+        if (firstname.length < 2 || !firstname) { res.status(412).json({ "error": "firstname too short" }); return }
+        if (lastname.length < 2 || !lastname) { res.status(412).json({ "error": "lastname too short" }); return }
+        if (!validateEmail || !email) { res.status(412).json({ "error": "email incorrect" }); return }
 
         function validateEmail(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -55,8 +55,8 @@ module.exports = {
         var password = req.body.password || '';
 
 
-        if (!email || email.length < 2) { res.status(401).json({ "error": "email incorrect" }); return }
-        if (!password || password.length < 2) { res.status(401).json({ "error": "password incorrect" }); return }
+        if (!email || email.length < 2) { res.status(412).json({ "error": "email incorrect" }); return }
+        if (!password || password.length < 2) { res.status(412).json({ "error": "password incorrect" }); return }
 
         db.query({
             sql: 'SELECT Email, Password FROM `user` WHERE `Email` = ?',

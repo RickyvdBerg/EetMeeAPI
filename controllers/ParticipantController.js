@@ -10,12 +10,15 @@ module.exports = {
 
         const houseId = req.params.id;
         const mealId = req.params.mid;
+        
 
         db.query('INSERT INTO deelnemers (UserID, StudentenhuisID, MaaltijdID) VALUES ((SELECT ID from user where Email = ?),?,?)',
             [email, houseId, mealId],
             (error, result, fields) => {
                 console.log(error);
-
+                if(!result){
+                    res.status(404).json({ "error": "one or more params incorrect" })
+                }
                 if (result.affectedRows == 0) {
                     res.status(412).json({ "error": "No changes were made an error occured" })
                 }
@@ -23,6 +26,7 @@ module.exports = {
                     res.status(200).json({ "succes": "You registered for this meal" })
                 }
             })
+            //TODO check if already subscribed to meal
     },
     getParticipantsForMeal(req, res, next) {
         const houseId = req.params.id;
@@ -34,7 +38,7 @@ module.exports = {
                 if (error) {
                     res.status(500).json({ "error": "An error occured while fetching the data" })
                 } else if (!result[0]) {
-                    res.status(500).json({ "error": "No meals found found for house id: " + huisId })
+                    res.status(404).json({ "error": "No meals found found for house id: " + huisId })
                 }
                 else {
                     res.status(200).json(result)
@@ -55,8 +59,14 @@ module.exports = {
             {
                 res.status(500).json({"error" : "Something went wrong while trying to delete entry from meals"})
             }
+            if(!resultInner){
+                res.status(404).json({ "error": "one or more params incorrect" })
+            }
             if (resultInner.affectedRows > 0) {
                 res.status(200).json({ "succes" : "Changes were made"});
+            }
+            else{
+                res.status(409).json({ "error": "Could not delete participant, are you the owner of this record?" })
             }
         })
     },

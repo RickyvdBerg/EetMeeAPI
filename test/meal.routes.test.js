@@ -1,9 +1,11 @@
-const chai = require('chai')
-const chaiHttp = require('chai-http')
-const server = require('../server')
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../server');
 
-chai.should()
-chai.use(chaiHttp)
+chai.should();
+chai.use(chaiHttp);
+
+
 
 describe('Maaltijd API POST', () => {
     it('should throw an error when using invalid JWT token', (done) => {
@@ -12,8 +14,8 @@ describe('Maaltijd API POST', () => {
             .get('/api/studentenhuis/1/maaltijd')
             .set('x-access-token', token)
             .end((err, res) => {
-                res.should.have.status(401)
-                done()
+                res.should.have.status(401);
+                done();
 
             })
     })
@@ -132,7 +134,7 @@ describe('Maaltijd API GET one', () => {
             .get('/api/studentenhuis/0/maaltijd/1')
             .set('x-access-token', token)
             .end(function (err, res) {
-                res.should.have.status(500);
+                res.should.have.status(404);
                 done()
             })
     })

@@ -78,7 +78,7 @@ describe('Registration', () => {
             "password": USER_PASSWORD
         })
         .end((err, res) => {
-            res.should.have.status(401)
+            res.should.have.status(412)
             res.body.should.have.property('error')
             done();
         })
@@ -95,7 +95,7 @@ describe('Registration', () => {
             "password": USER_PASSWORD
         })
         .end((err, res) => {
-            res.should.have.status(401)
+            res.should.have.status(412)
             res.body.should.have.property('error')
             done();
         })
@@ -111,7 +111,7 @@ describe('Registration', () => {
             "password": USER_PASSWORD
         })
         .end((err, res) => {
-            res.should.have.status(401)
+            res.should.have.status(412)
             res.body.should.have.property('error')
             done();
         })
@@ -128,7 +128,7 @@ describe('Registration', () => {
             "password": USER_PASSWORD
         })
         .end((err, res) => {
-            res.should.have.status(401)
+            res.should.have.status(412)
             res.body.should.have.property('error')
             done();
         })
@@ -144,7 +144,7 @@ describe('Registration', () => {
             "password": USER_PASSWORD
         })
         .end((err, res) => {
-            res.should.have.status(401)
+            res.should.have.status(412)
             res.body.should.have.property('error')
             done();
         })
@@ -187,7 +187,7 @@ describe('Login', () => {
             "password": USER_PASSWORD
         })
         .end((err, res) => {
-            res.should.have.status(401)
+            res.should.have.status(412)
             res.body.should.have.property('error')
             done();
         })

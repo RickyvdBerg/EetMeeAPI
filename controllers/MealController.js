@@ -25,10 +25,10 @@ module.exports = {
                     if (error) {
                         res.status(500).json({ "error": "An error occured while fetching the data" })
                     } else if (!result) {
-                        res.status(500).json({ "error": "No meals found found for house id: " + houseId })
+                        res.status(404).json({ "error": "No meals found found for house id: " + houseId })
                     }
                     else {
-                        res.status(200).json(result)
+                        res.status(200).json({ "succes": "Meal has been added"})
                     }
                     res.end();
                 })
@@ -44,7 +44,7 @@ module.exports = {
                 if (error) {
                     res.status(500).json({ "error": "An error occured while fetching the data" })
                 } else if (!result[0]) {
-                    res.status(500).json({ "error": "No meals found found for house id: " + huisId })
+                    res.status(404).json({ "error": "No meals found found for house id: " + huisId })
                 }
                 else {
                     res.status(200).json(result)
@@ -62,7 +62,7 @@ module.exports = {
                 if (error) {
                     res.status(500).json({ "error": "An error occured while fetching the data" })
                 } else if (!result[0]) {
-                    res.status(500).json({ "error": "No meals found found with id: " + mealId })
+                    res.status(404).json({ "error": "No meals found found with id: " + mealId })
                 }
                 else {
                     res.status(200).json(result)
@@ -86,6 +86,9 @@ module.exports = {
         db.query('UPDATE maaltijd INNER JOIN user ON maaltijd.UserID = user.ID SET Naam = ?, Beschrijving = ?, ingredienten = ?, allergie = ?, prijs = ? WHERE user.Email = ? AND maaltijd.ID = ?',
             [name, description, ingredients, allergy, price, email, mealId],
             (error, result, fields) => {
+                if(!result){
+                    res.status(404).json({ "error": "one or more params incorrect" })
+                }
                 if (result.changedRows == 0) {
                     res.status(412).json({ "error": "No changes were made, are you the owner of the meal?" })
                 }
@@ -108,6 +111,9 @@ module.exports = {
                     console.log(error)
                     res.status(500).json({"error" : "Something went wrong while trying to delete entry from participents"})
                 }
+                if(!result){
+                    res.status(404).json({ "error": "one or more params incorrect" })
+                }
                 if (result.affectedRows > 0) {
                     db.query('DELETE maaltijd FROM maaltijd INNER JOIN user ON maaltijd.UserID = user.ID WHERE user.Email = ? AND maaltijd.ID = ?',
                         [email, mealId],
@@ -117,6 +123,9 @@ module.exports = {
                                 console.log(errorInner)
                                 res.status(500).json({"error" : "Something went wrong while trying to delete entry from meals"})
                             }
+                            if(!resultInner){
+                                res.status(404).json({ "error": "one or more params incorrect" })
+                            }
                             if (resultInner.affectedRows > 0) {
                                 res.status(200).json({ "succes" : "Changes were made"});
                             }
@@ -124,7 +133,7 @@ module.exports = {
                 }
                 else {
                     console.log("no rows affected")
-                    res.status(412).json({ "error": "No changes were made, are you the owner of the meal?" })
+                    res.status(409).json({ "error": "No changes were made, are you the owner of the meal?" })
                 }
             })
 

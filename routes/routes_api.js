@@ -43,7 +43,7 @@ router.post('/studentenhuis', dormcontroller.postDorm);
 router.get('/studentenhuis', dormcontroller.getAll);
 router.get('/studentenhuis/:id', dormcontroller.getSpecificDorm);
 router.put('/studentenhuis/:id', dormcontroller.putDorm);
-router.delete('/studentenhuis/:id', dormcontroller.deleteDorm);
+router.delete('/studentenhuis/:id', dormcontroller.deleteDormTest);
 
 //meal
 router.delete('/studentenhuis/:id/maaltijd/:mid', mealcontroller.deleteMealById);

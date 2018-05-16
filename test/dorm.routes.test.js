@@ -2,6 +2,7 @@ const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../server')
 
+let dormId;
 
 chai.should()
 chai.use(chaiHttp)
@@ -13,7 +14,7 @@ describe('Studentenhuis API POST', () => {
             .get('/api/studentenhuis')
             .set('x-access-token', token)
             .end((err, res) => {
-                res.should.have.status(401)
+                res.should.have.status(401);
                 done()
 
             })
@@ -30,6 +31,7 @@ describe('Studentenhuis API POST', () => {
             })
             .end(function (err, res) {
                 res.should.have.status(200);
+                dormId = res.body.ID;
                 done();
             });
     });
@@ -98,7 +100,7 @@ describe('Studentenhuis API GET one', () => {
     it('should throw an error when using invalid JWT token', (done) => {
         token = 'invalid'
         chai.request(server)
-            .get('/api/studentenhuis/2')
+            .get('/api/studentenhuis/' + dormId)
             .set('x-access-token', token)
             .end(function (err, res) {
                 res.should.have.status(401);
@@ -110,7 +112,7 @@ describe('Studentenhuis API GET one', () => {
     it('should return the correct studentenhuis when using an existing huisId', (done) => {
         const token = require('./authentication.routes.test').token;
         chai.request(server)
-            .get('/api/studentenhuis/1')
+            .get('/api/studentenhuis/' + dormId)
             .set('x-access-token', token)
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -122,10 +124,10 @@ describe('Studentenhuis API GET one', () => {
     it('should return an error when using an non-existing huisId', (done) => {
         const token = require('./authentication.routes.test').token;
         chai.request(server)
-            .get('/api/studentenhuis/999')
+            .get('/api/studentenhuis/0')
             .set('x-access-token', token)
             .end(function (err, res) {
-                res.should.have.status(500);
+                res.should.have.status(404);
                 done()
             })
     })
@@ -136,7 +138,7 @@ describe('Studentenhuis API PUT', () => {
     it('should throw an error when using invalid JWT token', (done) => {
         const token = '1253'
         chai.request(server)
-            .put('/api/studentenhuis/1')
+            .put('/api/studentenhuis/' + dormId)
             .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(401)
@@ -148,7 +150,7 @@ describe('Studentenhuis API PUT', () => {
     it('should return a studentenhuis with ID when posting a valid object', (done) => {
         const token = require('./authentication.routes.test').token;
         chai.request(server)
-            .put('/api/studentenhuis/1')
+            .put('/api/studentenhuis/' + dormId)
             .set('x-access-token', token)
             .send({
                 'naam': 'Avans',
@@ -163,7 +165,7 @@ describe('Studentenhuis API PUT', () => {
     it('should throw an error when naam is missing', (done) => {
         const token = require('./authentication.routes.test').token;
         chai.request(server)
-            .put('/api/studentenhuis/1')
+            .put('/api/studentenhuis/' + dormId)
             .set('x-access-token', token)
             .send({
                 'naam': '',
@@ -178,7 +180,7 @@ describe('Studentenhuis API PUT', () => {
     it('should throw an error when adres is missing', (done) => {
         const token = require('./authentication.routes.test').token;
         chai.request(server)
-            .put('/api/studentenhuis/1')
+            .put('/api/studentenhuis/' + dormId)
             .set('x-access-token', token)
             .send({
                 'naam': 'Avans',
@@ -189,13 +191,23 @@ describe('Studentenhuis API PUT', () => {
                 done()
             })
     })
+    it('should return an error when using an non-existing huisId', (done) => {
+        const token = require('./authentication.routes.test').token;
+        chai.request(server)
+            .post('/api/studentenhuis/0')
+            .set('x-access-token', token)
+            .end(function (err, res) {
+                res.should.have.status(404);
+                done()
+            })
+    })
 })
 
 describe('Studentenhuis API DELETE', () => {
     it('should throw an error when using invalid JWT token', (done) => {
         const token = '1253'
         chai.request(server)
-            .get('/api/studentenhuis/1')
+            .delete('/api/studentenhuis/' + dormId)
             .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(401)
@@ -204,29 +216,15 @@ describe('Studentenhuis API DELETE', () => {
     })
     //TODO BUG in deleting users
 
-    // it('should return a studentenhuis when posting a valid object', (done) => {
-    //     const token = require('./authentication.routes.test').token;
-    //     chai.request(server)
-    //         .delete('/api/studentenhuis/1')
-    //         .set('x-access-token', token)
-    //         .end(function (err, res) {
-    //             res.should.have.status(200);
-    //             done()
-    //         })
-    // })
-
-    it('should throw an error when naam is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
-    })
-
-    it('should throw an error when adres is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done()
+    it('should return a studentenhuis when deleting a valid object', (done) => {
+        const token = require('./authentication.routes.test').token;
+        chai.request(server)
+            .delete('/api/studentenhuis/' + dormId)
+            .set('x-access-token', token)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                done()
+            })
     })
 })
 
