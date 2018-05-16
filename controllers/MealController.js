@@ -90,7 +90,7 @@ module.exports = {
                     res.status(404).json({ "error": "one or more params incorrect" })
                 }
                 if (result.changedRows == 0) {
-                    res.status(412).json({ "error": "No changes were made, are you the owner of the meal?" })
+                    res.status(409).json({ "error": "No changes were made, are you the owner of the meal?" })
                 }
                 else {
                     res.status(200).json({ "succes": "Changes were made" })
@@ -128,12 +128,16 @@ module.exports = {
                             }
                             if (resultInner.affectedRows > 0) {
                                 res.status(200).json({ "succes" : "Changes were made"});
-                            }
+                            } else {
+                                res.status(409).json({
+                                    "error": "Something went wrong, are you the creator of this meal or house?"
+                                });
+                            } 
                         })
                 }
                 else {
                     console.log("no rows affected")
-                    res.status(409).json({ "error": "No changes were made, are you the owner of the meal?" })
+                    res.status(409).json({ "error": "No changes were made, are you the owner of the meal or house?" })
                 }
             })
 

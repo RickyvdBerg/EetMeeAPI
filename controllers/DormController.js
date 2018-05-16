@@ -143,6 +143,11 @@ module.exports = {
                     } else if (result.affectedRows > 0) {
                         res.status(200).json('Row updated')
                     }
+                    else {
+                        res.status(409).json({
+                            "error": "Something went wrong, are you the creator of this house?"
+                        });
+                    }
                     res.end();
                 })
         })
